@@ -29,7 +29,7 @@ IncludeVersionInfo=0
 SupportXPThemes=0
 CompilerSet=0
 CompilerSettings=0000000000000000001000000
-UnitCount=6
+UnitCount=7
 
 [VersionInfo]
 Major=1
@@ -101,6 +101,15 @@ BuildCmd=
 
 [Unit6]
 FileName=users.txt
+Folder=data
+Compile=0
+Link=0
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit7]
+FileName=datateacher.txt
 Folder=data
 Compile=0
 Link=0

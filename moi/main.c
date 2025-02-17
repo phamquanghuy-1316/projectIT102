@@ -122,7 +122,7 @@ int main(int argc, char *argv[]) {
 	while(MenuChoice==2){
 		system("cls");
 		displayTeacherMenu();
-		printf("Enter your choice: ");
+		printf("\nEnter your choice: ");
 		scanf("%d",&teacherChoice);
 		while (getchar() != '\n');
 		system("cls");
@@ -133,23 +133,52 @@ int main(int argc, char *argv[]) {
 			tmp=n;
 			printf("nhap so giao vien muon nhap ");
 			scanf("%d",&n);
-			
+			inputTeacher(teachers,n);
+			saveTeacherToFile(teachers,n);
+			n+=tmp;
 			GoBackOrExit();
 			break;
 			}
 		case 2:
+			ShowAllTeachers(teachers,n);
+			GoBackOrExit();
 			break;
 		case 3:
+			editTeacher(teachers,n);
+			GoBackOrExit();
 			break;
 		case 4:
+			deleteTeacher(teachers,&n);
+			GoBackOrExit();
 			break;
 		case 5:
+			searchTeacherByName(teachers,n);
+			GoBackOrExit();
 			break;
 		case 6:
+			sortStudentMenu();
+			int choiceSort;
+			scanf("%d",&choiceSort);
+			switch(choiceSort){
+				case 1:
+					sortTeacherByNameZA(teachers,n);
+					ShowAllStudents(students,n);
+					break;
+				case 2:
+					sortStudentsByNameAZ(students,n);
+					ShowAllStudents(students,n);
+					break;
+			}
+			GoBackOrExit();
 			break;
 		case 7:
+			saveTeacherChangeToFile(teachers,n);
 			break;
 		case 8:
+			LoadTeachersFromFile(teachers, &n);
+			GoBackOrExit();
+			break;
+		case 9:
 			return 0;
 		default:
 			printf("Invalid choice");

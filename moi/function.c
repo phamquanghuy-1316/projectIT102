@@ -6,6 +6,7 @@
 #include <conio.h> // Thu vien cho _getch() 
 #include "datatype.h"
 #define MAX_STUDENTS 40
+#define MAX_TEACHER 40
 
 //hien thi danh sach sinh vien
 void ShowAllStudents(Student *students, int n){ 
@@ -24,6 +25,23 @@ void ShowAllStudents(Student *students, int n){
 	}
 	printf("+-----------+--------------------------------+-----------+--------+------------+--------------------+--------------------------------+\n");
 
+}
+
+//hien thi danh sach GIAO VIEN
+void ShowAllTeachers(Teacher *teachers, int n){ 
+	printf("+-----------+--------------------------------+-----------+--------+--------------------+--------------------------------+\n");
+	printf("| %-9s | %-30s | %-9s | %-6s | %-18s | %-30s |\n","Id","Name","Subject","Gender","phone","email");
+	printf("+-----------+--------------------------------+-----------+--------+--------------------+--------------------------------+\n");
+	int i;
+	for(i=0; i<n; i++){
+		printf("| %-9d | %-30s | %-9s | %-6s | %-18s | %-30s |\n",teachers[i].teacherId, 
+               teachers[i].name, 
+               teachers[i].subject, 
+               teachers[i].gender ? "Male" : "Female",   
+               teachers[i].phone, 
+               teachers[i].email);
+	}
+	printf("+-----------+--------------------------------+-----------+--------+--------------------+--------------------------------+\n");
 }
 
 void InputStudent(Student *students, int n, int tmp){
@@ -146,6 +164,7 @@ int checkLogin(char *username, char *password){
 	return strcmp(username,user)==0 && strcmp(password,pass)==0;
 }
 
+//sua thong tin SINH VIEN
 void editStudent(Student *students, int n) {
     int searchId;
     printf("Enter Student ID to edit: ");
@@ -181,6 +200,7 @@ void editStudent(Student *students, int n) {
                 temp[strcspn(temp, "\n")] = 0;
                 strcpy(students[i].classroomId, temp);
             }
+            
 
             
             printf("Enter new Gender (M/F): ");
@@ -205,19 +225,35 @@ void editStudent(Student *students, int n) {
 
             
             printf("Enter new Phone Number: ");
-            fgets(temp, sizeof(temp), stdin);
-            if (temp[0] != '\n') {
-                temp[strcspn(temp, "\n")] = 0;
-                strcpy(students[i].phone, temp);
-            }
+            while(1){
+            	fgets(temp, sizeof(temp), stdin);
+            	temp[strcspn(temp, "\n")] = 0;
+            	if (isPhoneExist(students, n, temp)) {
+            		printf("Phone number is duplicated, please re-enter: ");
+            		continue;
+        		}
+            	if (temp[0] != '\n') {
+            		strcpy(students[i].phone, temp);
+            		break;
+            	}
+            	break;
+			}
 
             
             printf("Enter new Email: ");
-            fgets(temp, sizeof(temp), stdin);
-            if (temp[0] != '\n') {
-                temp[strcspn(temp, "\n")] = 0;
+            while(1){
+            	fgets(temp, sizeof(temp), stdin);
+            	temp[strcspn(temp, "\n")] = 0;
+            	if (isEmailExist(students, n, temp)) {
+            		printf("Email is duplicated, please re-enter: ");
+            		continue;
+        		}
+        		if (temp[0] != '\n') {
                 strcpy(students[i].email, temp);
-            }
+                break;
+            	}
+        		break;
+			}
 
             printf("\nStudent information updated successfully!\n");
             return;
@@ -227,6 +263,94 @@ void editStudent(Student *students, int n) {
     printf("Error: Student with ID %d not found!\n", searchId);
 }
 
+//sua thong tin GIAO VIEN
+void editTeacher(Teacher *teachers, int n) {
+    int searchId;
+    printf("Enter Teacher ID to edit: ");
+    scanf("%d", &searchId);
+    getchar(); 
+ 
+	int i;
+    for ( i = 0; i < n; i++) {
+        if (teachers[i].teacherId == searchId) { 
+            printf("\nTeacher found! Current information:\n");
+
+            printf("ID: %d\n", teachers[i].teacherId);
+            printf("Name: %s\n", teachers[i].name);
+            printf("Subject: %s\n", teachers[i].subject);
+            printf("Gender: %s\n", teachers[i].gender ? "Male" : "Female");
+            printf("Phone: %s\n", teachers[i].phone);
+            printf("Email: %s\n", teachers[i].email);
+
+            
+            printf("Enter new Name: ");
+            char temp[50];
+            fgets(temp, sizeof(temp), stdin);
+            if (temp[0] != '\n') {
+                temp[strcspn(temp, "\n")] = 0;
+                strcpy(teachers[i].name, temp);
+            }
+
+            
+            printf("Enter new Classroom: ");
+            fgets(temp, sizeof(temp), stdin);
+            if (temp[0] != '\n'){
+                temp[strcspn(temp, "\n")] = 0;
+                strcpy(teachers[i].subject, temp);
+            }
+
+            
+            printf("Enter new Gender (M/F): ");
+            char gender;
+            scanf(" %c", &gender);
+            getchar();
+            if (gender == 'M' || gender == 'm'){
+                teachers[i].gender = true;
+            } else if (gender == 'F' || gender == 'f'){
+                teachers[i].gender = false;
+            }
+            
+            printf("Enter new Phone Number: ");
+            while(1){
+            	fgets(temp, sizeof(temp), stdin);
+            	temp[strcspn(temp, "\n")] = 0;
+            	if (isPhoneTeacherExist(teachers,n, temp)) {
+            		printf("Phone number is duplicated, please re-enter: ");
+            		continue;
+        		}
+            	if (temp[0] != '\n') {
+            		strcpy(teachers[i].phone, temp);
+            		break;
+            	}
+            	break;
+			}
+
+            
+            printf("Enter new Email: ");
+            while(1){
+            	fgets(temp, sizeof(temp), stdin);
+            	temp[strcspn(temp, "\n")] = 0;
+            	if (isEmailTeacherExist(teachers,n,temp)) {
+            		printf("Email is duplicated, please re-enter: ");
+            		continue;
+        		}
+        		if (temp[0] != '\n') {
+                strcpy(teachers[i].email, temp);
+                break;
+            	}
+        		break;
+			}
+            
+
+            printf("\nTeacher information updated successfully!\n");
+            return;
+        }
+    }
+
+    printf("Error: Student with ID %d not found!\n", searchId);
+}
+
+//xoa SINH VIEN
 void deleteStudent(Student *students, int *n) {
     int deleteID;
     printf("Enter Student ID to delete: ");
@@ -261,6 +385,44 @@ void deleteStudent(Student *students, int *n) {
     // Neu khong tim thay sinh vien
     if (pos == -1){
         printf("Error: Student with ID %d not found!\n", deleteID);
+    }
+}
+
+//xoa GIAO VIEN
+void deleteTeacher(Teacher *teachers, int *n) {
+    int deleteID;
+    printf("Enter Teacher ID to delete: ");
+    scanf("%d", &deleteID);
+
+    int i, pos = -1;
+    char confirm;
+
+    for (i = 0; i < *n; i++) { //tim kiem giao vien trong danh sach
+        if (teachers[i].teacherId == deleteID){
+            pos = i;
+            printf("Confirm deletion (Y/N): ");
+            
+            // Xu ly bo nho dem truoc khi nhap ky tu
+            while (getchar() != '\n');  
+            scanf("%c", &confirm);
+			
+            if (confirm == 'Y' || confirm == 'y'){
+                int j;
+                for (j = pos; j < *n - 1; j++){
+                    teachers[j] = teachers[j + 1];
+                }
+                (*n)--;
+                printf("Teacher with ID %d deleted successfully.\n", deleteID);
+            }else{
+                printf("Deletion canceled.\n");
+            }
+            return;  //thoat khoi ham ngay sau khi xoa hoac huy
+        }
+    }
+
+    // Neu khong tim thay sinh vien
+    if (pos == -1){
+        printf("Error: Teacher with ID %d not found!\n", deleteID);
     }
 }
 
@@ -302,7 +464,14 @@ void swap(Student *a, Student *b){
     *b = temp;          
 }
 
-//sap xep theo ten tu A-Z 
+//hoan doi vi tri 2 giao vien
+void swapTeacher(Teacher *a, Teacher *b){
+    Teacher temp = *a;  
+    *a = *b;            
+    *b = temp;          
+}
+
+//sap xep SINH VIEN theo ten tu Z-A 
 void sortStudentsByNameZA(Student *students, int n){
 	int i;
     for (i = 0; i < n - 1; i++){
@@ -310,6 +479,19 @@ void sortStudentsByNameZA(Student *students, int n){
         for (j = i + 1; j < n; j++){
             if (strcmp(students[i].name, students[j].name) < 0){
                 swap(&students[i], &students[j]);
+            }
+        }
+    }
+}
+
+//sap xep GIAO VIEN theo ten tu Z-A
+void sortTeacherByNameZA(Teacher *teachers, int n){
+	int i;
+    for (i = 0; i < n - 1; i++){
+    	int j;
+        for (j = i + 1; j < n; j++){
+            if (strcmp(teachers[i].name, teachers[j].name) < 0){
+                swapTeacher(&teachers[i], &teachers[j]);
             }
         }
     }
@@ -328,8 +510,21 @@ void sortStudentsByNameAZ(Student *students, int n){
     }
 }
 
+//sap xep GIAO VIEN theo ten tu A-Z
+void sortTeacherByNameAZ(Teacher *teachers, int n){
+	int i;
+    for (i = 0; i < n - 1; i++){
+    	int j;
+        for (j = i + 1; j < n; j++){
+            if (strcmp(teachers[i].name, teachers[j].name) > 0){
+                swapTeacher(&teachers[i], &teachers[j]);
+            }
+        }
+    }
+}
+
 //tim kiem sinh vien bang ten 
-void searchStudentByName(Student *students, int *n){
+void searchStudentByName(Student *students, int n){
 	printf("Enter name student to search: ");
 	char searchName[50];
 	fgets(searchName, sizeof(searchName), stdin);
@@ -355,6 +550,35 @@ void searchStudentByName(Student *students, int *n){
 	}
 	if(!found){
 		printf("No students found!");
+	}
+}
+
+//tim kiem GIAO VIEN theo ten
+void searchTeacherByName(Teacher *teachers, int n){
+	printf("Enter name student to search: ");
+	char searchName[50];
+	fgets(searchName, sizeof(searchName), stdin);
+    searchName[strcspn(searchName, "\n")] = '\0'; //xoa ky tu xuong dong
+    printf("\n===== SEARCH RESULTS =====\n");
+    int found = 0; // bien kiem tra co tim thay hay khong;
+    int i;
+	for(i=0; i<n; i++){
+		if(strstr(teachers[i].name,searchName) != NULL){
+			found =1;
+			printf("+-----------+--------------------------------+-----------+--------+--------------------+--------------------------------+\n");
+			printf("| %-9s | %-30s | %-9s | %-6s | %-18s | %-30s |\n","Id","Name","Subject","Gender","phone","email");
+			printf("+-----------+--------------------------------+-----------+--------+--------------------+--------------------------------+\n");
+			printf("| %-9d | %-30s | %-9s | %-6s | %-18s | %-30s |\n",teachers[i].teacherId, 
+               teachers[i].name, 
+               teachers[i].subject, 
+               teachers[i].gender ? "Male" : "Female",   
+               teachers[i].phone, 
+               teachers[i].email);
+            printf("+-----------+--------------------------------+-----------+--------+--------------------+--------------------------------+\n");
+		}
+	}
+	if(!found){
+		printf("No teacher found!");
 	}
 }
 
@@ -403,6 +627,7 @@ int isPhoneTeacherExist(Teacher *teachers, int n, char *phone){
     return 0;
 }
 
+//luu SINH VIEN vo file
 void saveStudentToFile(Student *students, int n){
     FILE *file = fopen("datastudent.txt", "a");
 
@@ -413,7 +638,7 @@ void saveStudentToFile(Student *students, int n){
 	
 	int i;
     for (i = 0; i < n; i++){
-        fprintf(file, "%d, %s, %s, %6d, %02d, %02d, %04d, %s, %s\n",  
+        fprintf(file, "%d, %s, %s, %d, %02d, %02d, %04d, %s, %s\n",  
                 students[i].studentId,  
                 students[i].name,  
                 students[i].classroomId,  
@@ -423,6 +648,30 @@ void saveStudentToFile(Student *students, int n){
                 students[i].dateOfBirth.year,  
                 students[i].phone,  
                 students[i].email);
+    }
+
+    fclose(file);
+    printf("Save to file successfully!\n");
+}
+
+//luu GIAO VIEN vo file
+void saveTeacherToFile(Teacher *teachers, int n){
+    FILE *file = fopen("datateacher.txt", "a");
+
+    if (file == NULL){
+        printf("Error: Cannot open file to write!\n");
+        return;
+    }
+	
+	int i;
+    for (i = 0; i < n; i++){
+        fprintf(file, "%d,%29[^,],%29[^,],%d,%17[^,],%29[^\n]",
+                teachers[i].teacherId,  
+                teachers[i].name,  
+                teachers[i].subject,
+                teachers[i].gender,   
+                teachers[i].phone,  
+                teachers[i].email);
     }
 
     fclose(file);
@@ -439,7 +688,7 @@ void saveChangeToFile(Student *students, int n){
 	
 	int i;
     for (i = 0; i < n; i++){
-        fprintf(file, "%d, %s, %s, %6d, %02d, %02d, %04d, %s, %s\n",  
+        fprintf(file, "%d, %s, %s, %d, %02d, %02d, %04d, %s, %s\n",  
                 students[i].studentId,  
                 students[i].name,  
                 students[i].classroomId,  
@@ -452,19 +701,45 @@ void saveChangeToFile(Student *students, int n){
     }
 
     fclose(file);
-    printf("Save to file successfully!\n");
+    printf("Save successfully!\n");
 }
 
+
+void saveTeacherChangeToFile(Teacher *teachers, int n) {
+    FILE *file = fopen("datateacher.txt", "w");
+
+    if (file == NULL) {
+        printf("Error: Cannot open file to write!\n");
+        return;
+    }
+
+    int i;
+    for (i = 0; i < n; i++) {
+        fprintf(file, "%d, %s, %d, %s, %s, %s\n",  
+                teachers[i].teacherId,  
+                teachers[i].name,  
+                teachers[i].gender,  
+                teachers[i].subject,  
+                teachers[i].email,  
+                teachers[i].phone);
+    }
+
+    fclose(file);
+    printf("Save successfully!\n");
+}
+
+
+//load SINH VIEN tu file
 void LoadStudentsFromFile(Student *students, int *n){
     FILE *file = fopen("datastudent.txt", "r");
     if (file == NULL){
-        printf("? Error: Cannot open file!\n");
+        printf("Error: Cannot open file!\n");
         return;
     }
 
     *n = 0;
     
-    while (*n < MAX_STUDENTS && fscanf(file, "%9d , %30[^,] , %9[^,] , %6d , %02d , %02d , %04d , %18[^,] , %30[^\n]",
+    while (*n < MAX_STUDENTS && fscanf(file, "%9d , %29[^,] , %9[^,] , %d , %02d , %02d , %04d , %18[^,] , %30[^\n]",
                   &students[*n].studentId,  
                   students[*n].name,  
                   students[*n].classroomId,
@@ -481,6 +756,31 @@ void LoadStudentsFromFile(Student *students, int *n){
     fclose(file);
 }
 
+//load GIAO VIEN tu file
+void LoadTeachersFromFile(Teacher *teachers, int *n){
+    FILE *file = fopen("datateacher.txt", "r");
+    if (file == NULL){
+        printf("Error: Cannot open file!\n");
+        return;
+    }
+
+    *n = 0;
+    
+    while (*n < MAX_TEACHER && fscanf(file, "%d,%29[^,],%9[^,],%d,%11[^,],%29[^\n]",
+                  	&teachers[*n].teacherId,  
+       				teachers[*n].name,  
+       				teachers[*n].subject,
+       				&teachers[*n].gender,
+       				teachers[*n].phone,  
+       				teachers[*n].email) == 6){
+        (*n)++;
+    }
+
+    printf("Load successful! Total students: %d\n", *n);
+    fclose(file);
+}
+
+//nhap mat khau hien dau *
 void getPassword(char *password, int MAX_PASSLENGTH){
     int i = 0;
     char ch;
@@ -520,8 +820,9 @@ void displayTeacherMenu(){
 		printf("\n%s\n","[4].Delete A Teacher");
 		printf("\n%s\n","[5].Search A Teacher");
 		printf("\n%s\n","[6].Sort Teacher");
-		printf("\n%s\n","[7].Load Teacher From File");
-		printf("\n%s\n","[8].Exit The Program");
+		printf("\n%s\n","[7].Save change");
+		printf("\n%s\n","[8].Load Teacher From File");
+		printf("\n%s\n","[9].Exit The Program");
 		printf("====================================================");
 }
 
@@ -607,6 +908,8 @@ void inputTeacher(Teacher *teachers, int n){
             printf("Email is duplicated, please re-enter: ");
             continue;
         }
+        strcpy(teachers[i].email,email);
+        while (getchar() != '\n');
         break; // neu email hop le thoat vong lap 
     	}
     	
@@ -628,8 +931,11 @@ void inputTeacher(Teacher *teachers, int n){
             printf("Phone number is duplicated, please re-enter: ");
             continue;
         }
-
+        strcpy(teachers[i].phone,phone);
+        while (getchar() != '\n');
         break; // neu sdt hop le thoat vong lap 
-    	}
+    	}	
 	}
 }
+
+

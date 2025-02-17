@@ -40,7 +40,27 @@ void displayTeacherMenu();
 
 void saveChangeToFile();
 
+//chuc nang giao vien
 int isEmailTeacherExist();
 
 int isPhoneTeacherExist();
 
+void saveTeacherToFile();
+
+void LoadTeachersFromFile();
+
+void ShowAllTeachers();
+
+void editTeacher();
+
+void deleteTeacher();
+
+void searchTeacherByName();
+
+void swapTeacher();
+
+void sortTeacherByNameZA();
+
+void sortTeacherByNameAZ();
+
+void saveTeacherChangeToFile();

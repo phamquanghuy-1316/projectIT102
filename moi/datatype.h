@@ -19,7 +19,7 @@ typedef struct {
 	int teacherId;
 	char name[30];
 	bool gender;
-	char subject[30];
+	char subject[10];
 	char email[30];
     char phone[12];
 } Teacher;
