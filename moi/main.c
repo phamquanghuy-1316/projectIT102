@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 	//khai bao
 	Student students[MAX_STUDENTS];
 	Teacher teachers[MAX_TEACHER];
-	int n=0,addQuantity;
+	int n=0;
 	int choice,MenuChoice=-1,teacherChoice;
 	char username[20], password[MAX_PASSLENGTH];
 	
@@ -63,7 +63,7 @@ int main(int argc, char *argv[]) {
 			tmp=n;
 			printf("nhap so sinh vien muon them ");
 			scanf("%d",&n);
-			InputStudent(students,n,tmp);
+			InputStudent(students,tmp);
 			saveStudentToFile(students,n);
 			n+=tmp;
 			GoBackOrExit();
@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
 			tmp=n;
 			printf("nhap so giao vien muon nhap ");
 			scanf("%d",&n);
-			inputTeacher(teachers,n);
+			inputTeacher(teachers,n,tmp);
 			saveTeacherToFile(teachers,n);
 			n+=tmp;
 			GoBackOrExit();
@@ -162,11 +162,11 @@ int main(int argc, char *argv[]) {
 			switch(choiceSort){
 				case 1:
 					sortTeacherByNameZA(teachers,n);
-					ShowAllStudents(students,n);
+					ShowAllTeachers(teachers,n);
 					break;
 				case 2:
-					sortStudentsByNameAZ(students,n);
-					ShowAllStudents(students,n);
+					sortTeacherByNameAZ(teachers,n);
+					ShowAllTeachers(teachers,n);
 					break;
 			}
 			GoBackOrExit();

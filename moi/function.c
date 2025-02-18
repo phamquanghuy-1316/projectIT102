@@ -29,19 +29,18 @@ void ShowAllStudents(Student *students, int n){
 
 //hien thi danh sach GIAO VIEN
 void ShowAllTeachers(Teacher *teachers, int n){ 
-	printf("+-----------+--------------------------------+-----------+--------+--------------------+--------------------------------+\n");
-	printf("| %-9s | %-30s | %-9s | %-6s | %-18s | %-30s |\n","Id","Name","Subject","Gender","phone","email");
-	printf("+-----------+--------------------------------+-----------+--------+--------------------+--------------------------------+\n");
+	printf("+-----------+--------------------------------+--------+--------------------+--------------------------------+\n");
+	printf("| %-9s | %-30s | %-6s | %-18s | %-30s |\n","Id","Name","Gender","phone","email");
+	printf("+-----------+--------------------------------+--------+--------------------+--------------------------------+\n");
 	int i;
 	for(i=0; i<n; i++){
-		printf("| %-9d | %-30s | %-9s | %-6s | %-18s | %-30s |\n",teachers[i].teacherId, 
+		printf("| %-9d | %-30s | %-6s | %-18s | %-30s |\n",teachers[i].teacherId, 
                teachers[i].name, 
-               teachers[i].subject, 
                teachers[i].gender ? "Male" : "Female",   
                teachers[i].phone, 
                teachers[i].email);
 	}
-	printf("+-----------+--------------------------------+-----------+--------+--------------------+--------------------------------+\n");
+	printf("+-----------+--------------------------------+--------+--------------------+--------------------------------+\n");
 }
 
 void InputStudent(Student *students, int n, int tmp){
@@ -277,7 +276,6 @@ void editTeacher(Teacher *teachers, int n) {
 
             printf("ID: %d\n", teachers[i].teacherId);
             printf("Name: %s\n", teachers[i].name);
-            printf("Subject: %s\n", teachers[i].subject);
             printf("Gender: %s\n", teachers[i].gender ? "Male" : "Female");
             printf("Phone: %s\n", teachers[i].phone);
             printf("Email: %s\n", teachers[i].email);
@@ -290,15 +288,6 @@ void editTeacher(Teacher *teachers, int n) {
                 temp[strcspn(temp, "\n")] = 0;
                 strcpy(teachers[i].name, temp);
             }
-
-            
-            printf("Enter new Classroom: ");
-            fgets(temp, sizeof(temp), stdin);
-            if (temp[0] != '\n'){
-                temp[strcspn(temp, "\n")] = 0;
-                strcpy(teachers[i].subject, temp);
-            }
-
             
             printf("Enter new Gender (M/F): ");
             char gender;
@@ -555,7 +544,7 @@ void searchStudentByName(Student *students, int n){
 
 //tim kiem GIAO VIEN theo ten
 void searchTeacherByName(Teacher *teachers, int n){
-	printf("Enter name student to search: ");
+	printf("Enter name teacher to search: ");
 	char searchName[50];
 	fgets(searchName, sizeof(searchName), stdin);
     searchName[strcspn(searchName, "\n")] = '\0'; //xoa ky tu xuong dong
@@ -565,16 +554,15 @@ void searchTeacherByName(Teacher *teachers, int n){
 	for(i=0; i<n; i++){
 		if(strstr(teachers[i].name,searchName) != NULL){
 			found =1;
-			printf("+-----------+--------------------------------+-----------+--------+--------------------+--------------------------------+\n");
-			printf("| %-9s | %-30s | %-9s | %-6s | %-18s | %-30s |\n","Id","Name","Subject","Gender","phone","email");
-			printf("+-----------+--------------------------------+-----------+--------+--------------------+--------------------------------+\n");
-			printf("| %-9d | %-30s | %-9s | %-6s | %-18s | %-30s |\n",teachers[i].teacherId, 
-               teachers[i].name, 
-               teachers[i].subject, 
+			printf("+-----------+--------------------------------+--------+--------------------+--------------------------------+\n");
+			printf("| %-9s | %-30s | %-6s | %-18s | %-30s |\n","Id","Name","Gender","phone","email");
+			printf("+-----------+--------------------------------+--------+--------------------+--------------------------------+\n");
+			printf("| %-9d | %-30s | %-6s | %-18s | %-30s |\n",teachers[i].teacherId, 
+               teachers[i].name,  
                teachers[i].gender ? "Male" : "Female",   
                teachers[i].phone, 
                teachers[i].email);
-            printf("+-----------+--------------------------------+-----------+--------+--------------------+--------------------------------+\n");
+            printf("+-----------+--------------------------------+--------+--------------------+--------------------------------+\n");
 		}
 	}
 	if(!found){
@@ -665,10 +653,9 @@ void saveTeacherToFile(Teacher *teachers, int n){
 	
 	int i;
     for (i = 0; i < n; i++){
-        fprintf(file, "%d,%29[^,],%29[^,],%d,%17[^,],%29[^\n]",
+        fprintf(file, "%d,%s,%d,%s,%s\n",
                 teachers[i].teacherId,  
                 teachers[i].name,  
-                teachers[i].subject,
                 teachers[i].gender,   
                 teachers[i].phone,  
                 teachers[i].email);
@@ -715,11 +702,10 @@ void saveTeacherChangeToFile(Teacher *teachers, int n) {
 
     int i;
     for (i = 0; i < n; i++) {
-        fprintf(file, "%d, %s, %d, %s, %s, %s\n",  
+        fprintf(file, "%d, %s, %d, %s, %s\n",  
                 teachers[i].teacherId,  
                 teachers[i].name,  
-                teachers[i].gender,  
-                teachers[i].subject,  
+                teachers[i].gender,    
                 teachers[i].email,  
                 teachers[i].phone);
     }
@@ -766,13 +752,12 @@ void LoadTeachersFromFile(Teacher *teachers, int *n){
 
     *n = 0;
     
-    while (*n < MAX_TEACHER && fscanf(file, "%d,%29[^,],%9[^,],%d,%11[^,],%29[^\n]",
+    while (*n < MAX_TEACHER && fscanf(file, "%d,%29[^,],%d,%11[^,],%29[^\n]",
                   	&teachers[*n].teacherId,  
        				teachers[*n].name,  
-       				teachers[*n].subject,
        				&teachers[*n].gender,
        				teachers[*n].phone,  
-       				teachers[*n].email) == 6){
+       				teachers[*n].email) == 5){
         (*n)++;
     }
 
@@ -876,18 +861,6 @@ void inputTeacher(Teacher *teachers, int n){
 		}else{
 			printf("Invalid gender, default is (Male)");
 			teachers[i].gender=true;
-		}
-		
-		//nhap mon hoc
-		while(1){
-			printf("Enter subject: ");
-			fgets(teachers[i].subject, sizeof(teachers[i].subject), stdin);
-        	teachers[i].subject[strcspn(teachers[i].subject, "\n")] = 0;
-        	if(strlen(teachers[i].subject)==0){
-        		printf("Subject cannot be empty. please re-enter: ");
-        		continue;
-			}
-			break;
 		}
 		
 		//nhap email
