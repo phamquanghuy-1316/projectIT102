@@ -416,7 +416,7 @@ void deleteTeacher(Teacher *teachers, int *n) {
 }
 
 void displayMainMenu(){
-	printf("---------------chao mung den voi menu quan ly---------------\n");
+	printf("---------------Welcome to the management menu---------------\n");
 	printf("====================================================");
 		printf("\n%s\n","***Students Management System Using C***");
 		printf("\n%25s\n","STUDENT MENU");
@@ -791,11 +791,12 @@ void selectFunctionMenu(){
 	printf("==================================\n");
 	printf("[1].student management menu\n");
 	printf("[2].teacher management menu\n");
+	printf("[3].class management menu\n");
 	printf("==================================");
 }
 
 void displayTeacherMenu(){
-	printf("---------------chao mung den voi menu quan ly---------------\n");
+	printf("---------------Welcome to the management menu---------------\n");
 	printf("====================================================");
 		printf("\n%s\n","***Students Management System Using C***");
 		printf("\n%25s\n","TEACHER MENU");
@@ -808,6 +809,24 @@ void displayTeacherMenu(){
 		printf("\n%s\n","[7].Save change");
 		printf("\n%s\n","[8].Load Teacher From File");
 		printf("\n%s\n","[9].Exit The Program");
+		printf("====================================================");
+}
+
+void displayClassMenu(){
+	printf("---------------Welcome to the management menu---------------\n");
+	printf("====================================================");
+		printf("\n%s\n","***Students Management System Using C***");
+		printf("\n%25s\n","CLASS MENU");
+		printf("\n%s\n","[1].Add A New Class");
+		printf("\n%s\n","[2].Show All Class");
+		printf("\n%s\n","[3].Edit A Class");
+		printf("\n%s\n","[4].Delete A Class");
+		printf("\n%s\n","[5].Delete A Student In Class");
+		printf("\n%s\n","[6].Class details");
+		printf("\n%s\n","[7].Sort Class");
+		printf("\n%s\n","[8].Save change");
+		printf("\n%s\n","[9].Load Class From File");
+		printf("\n%s\n","[10].Exit The Program");
 		printf("====================================================");
 }
 

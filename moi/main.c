@@ -49,6 +49,7 @@ int main(int argc, char *argv[]) {
 	
 	//quan ly sinh vien  
 	while(MenuChoice==1){
+		LoadStudentsFromFile(students, &n);
 		system("cls");
 		displayMainMenu();
 	
@@ -120,6 +121,7 @@ int main(int argc, char *argv[]) {
 	
 	//quan ly giao vien
 	while(MenuChoice==2){
+		LoadTeachersFromFile(teachers, &n);
 		system("cls");
 		displayTeacherMenu();
 		printf("\nEnter your choice: ");
@@ -184,6 +186,14 @@ int main(int argc, char *argv[]) {
 			printf("Invalid choice");
 			break;
 		}
+	}
+	
+	//quan ly lop
+	while(MenuChoice==3){
+		system("cls");
+		displayClassMenu();
+		printf("\nEnter your choice: ");
+		scanf("%d",&teacherChoice);
 	}
 	return 0;
 }

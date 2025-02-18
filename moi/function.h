@@ -64,3 +64,5 @@ void sortTeacherByNameZA();
 void sortTeacherByNameAZ();
 
 void saveTeacherChangeToFile();
+
+void displayClassMenu();
